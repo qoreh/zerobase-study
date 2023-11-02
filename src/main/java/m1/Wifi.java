@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class Wifi {
 
+    private String dist;
     private String mrgNo;
     private String wrdofc;
     private String mainNm;

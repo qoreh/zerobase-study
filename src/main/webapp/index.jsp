@@ -1,8 +1,12 @@
+<%@ page import="m1.Wifi" %>
+<%@ page import="java.util.List" %>
+<%@ page import="m1.WifiService" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
   <title>JSP - Hello World</title>
+  <script src="js/myPosition.js"></script>
   <style>
     body{
       margin: 0;
@@ -14,11 +18,6 @@
     }
 
     input {
-      width: 100px;
-      font-size: 12px;
-    }
-
-    button{
       font-size: 11px;
     }
 
@@ -44,6 +43,16 @@
   </style>
 </head>
 <body>
+  <%
+    String lat = request.getParameter("lat");
+    String lnt = request.getParameter("lnt");
+
+
+    List<Wifi> wifiList = WifiService.getAroundWifi();
+
+  %>
+
+
   <h1>와이파이 정보 구하기</h1>
   <div class="hyperlink">
     <a href="index.jsp" >홈</a> |
@@ -52,12 +61,17 @@
   </div>
   <br>
 
+
   <span>LAT: </span>
-  <input type="text" placeholder="0.0">
+  <input type="text" id="LAT" value="" placeholder="0.0">
   <span>, LNT: </span>
-  <input type="text" placeholder="0.0">
-  <button>내 위치 가져오기</button>
-  <button>근처 WIFI 정보 보기</button>
+  <input type="text" id="LNT" value="" placeholder="0.0">
+
+  <input type="button" value="내 위치 가져오기" onclick="getLocation()">
+  <input type="button" value="근처 WIFI 정보 보기" onclick="updateUrl()">
+
+
+
 
   <table>
     <thead>
@@ -82,11 +96,39 @@
       </tr>
     </thead>
 
-    <tbody>
+
+    <tbody id="empty" style="display: none">
       <tr>
         <td colspan="17" style="text-align: center; padding: 15px 0 15px 0;">위치 정보를 입력한 후에 조회해 주세요.</td>
       </tr>
     </tbody>
+
+    <tbody id="exist-pos" style="display: none">
+      <tr>
+        <% for (Wifi wifi : wifiList) { %>
+
+        <td><%=wifi.getDist()%></td>
+        <td><%=wifi.getMrgNo()%></td>
+        <td><%=wifi.getWrdofc()%></td>
+        <td><%=wifi.getMainNm()%></td>
+        <td><%=wifi.getAdres1()%></td>
+        <td><%=wifi.getAdres2()%></td>
+        <td><%=wifi.getInstlFloor()%></td>
+        <td><%=wifi.getInstlTy()%></td>
+        <td><%=wifi.getInstlMby()%></td>
+        <td><%=wifi.getSvcSe()%></td>
+        <td><%=wifi.getCmcwr()%></td>
+        <td><%=wifi.getCnstcYear()%></td>
+        <td><%=wifi.getInoutDoor()%></td>
+        <td><%=wifi.getRemars3()%></td>
+        <td><%=wifi.getLnt()%></td>
+        <td><%=wifi.getLat()%></td>
+        <td><%=wifi.getWorkDttm()%></td>
+
+        <% } %>
+      </tr>
+    </tbody>
+
   </table>
 
 </body>
