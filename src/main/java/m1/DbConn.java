@@ -94,7 +94,7 @@ public class DbConn {
 
             ps = connection.prepareStatement(sql);
 
-            ps.setString(1, wifi.getMrgNo());
+            ps.setString(1, wifi.getMgrNo());
             ps.setString(2, wifi.getWrdofc());
             ps.setString(3, wifi.getMainNm());
             ps.setString(4, wifi.getAdres1());

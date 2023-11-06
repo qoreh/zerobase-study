@@ -4,10 +4,8 @@ import com.google.gson.*;
 import okhttp3.*;
 import okhttp3.Request;
 
+import java.sql.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,7 +120,7 @@ public class WifiService {
 
     private static void insertInfo(JsonArray array) {
 
-        String mrgNo = "";
+        String mgrNo = "";
         String wrdofc = "";
         String mainNm = "";
         String adres1 = "";
@@ -153,7 +151,7 @@ public class WifiService {
         for (int i = 0; i < array.size(); i++) {
             tmp = (JsonObject) array.get(i);
 
-            mrgNo = tmp.getAsJsonObject().get("X_SWIFI_MGR_NO").getAsString();
+            mgrNo = tmp.getAsJsonObject().get("X_SWIFI_MGR_NO").getAsString();
             wrdofc = tmp.getAsJsonObject().get("X_SWIFI_WRDOFC").getAsString();
             mainNm = tmp.getAsJsonObject().get("X_SWIFI_MAIN_NM").getAsString();
             adres1 = tmp.getAsJsonObject().get("X_SWIFI_ADRES1").getAsString();
@@ -166,11 +164,11 @@ public class WifiService {
             cnstcYear = tmp.getAsJsonObject().get("X_SWIFI_CNSTC_YEAR").getAsString();
             inoutDoor = tmp.getAsJsonObject().get("X_SWIFI_INOUT_DOOR").getAsString();
             remars3 = tmp.getAsJsonObject().get("X_SWIFI_REMARS3").getAsString();
-            lnt = tmp.getAsJsonObject().get("LNT").getAsString();
-            lat = tmp.getAsJsonObject().get("LAT").getAsString();
+            lnt = tmp.getAsJsonObject().get("LAT").getAsString(); // 일부러 바꿔서 넣어줌 open api x좌표 y좌표 거꾸로 기입되어있음
+            lat = tmp.getAsJsonObject().get("LNT").getAsString();
             workDttm = tmp.getAsJsonObject().get("WORK_DTTM").getAsString();
 
-            ps.setString(1, mrgNo);
+            ps.setString(1, mgrNo);
             ps.setString(2, wrdofc);
             ps.setString(3, mainNm);
             ps.setString(4, adres1);
@@ -217,11 +215,215 @@ public class WifiService {
     }
 
 
-    public static List<Wifi> getAroundWifi(){
+    /**
+     * 근처 와이파이 정보 가져오기
+     * @param myLat 내 Y좌표
+     * @param myLnt 내 X좌표
+     * @return
+     */
+    public static List<Wifi> getAroundWifi(String myLat, String myLnt){
         List<Wifi> list = new ArrayList<>();
+        createConnection();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "select round(abs(6371 * acos(cos(radians(info.LAT)) * cos(radians(?)) * cos(radians(?) " +
+                    "- radians(info.LNT)) + sin(radians(info.LAT)) * sin(radians(?)))), 4) as DISTANCE " +
+                    ", * " +
+                    "from info  " +
+                    "where LAT != 0 and LNT != 0  " +
+                    "order by DISTANCE  " +
+                    "limit 20 offset 0; ";
+            ps = connection.prepareStatement(sql);
+
+            ps.setString(1, myLat);
+            ps.setString(2, myLnt);
+            ps.setString(3, myLat);
+            rs = ps.executeQuery();
+
+            String dist = "";
+            String mgrNo = "";
+            String wrdofc = "";
+            String mainNm = "";
+            String adres1 = "";
+            String adres2 = "";
+            String instlFloor = "";
+            String instlTy = "";
+            String instlMby = "";
+            String svcSe = "";
+            String cmcwr = "";
+            String cnstcYear = "";
+            String inoutDoor = "";
+            String remars3 = "";
+            String lat = "";
+            String lnt = "";
+            String workDttm = "";
+            while (rs.next()) {
+
+                dist = rs.getString("DISTANCE");
+                mgrNo = rs.getString("MGR_NO");
+                wrdofc = rs.getString("WRDOFC");
+                mainNm = rs.getString("MAIN_NM");
+                adres1 = rs.getString("ADRES1");
+                adres2 = rs.getString("ADRES2");
+                instlFloor = rs.getString("INSTL_FLOOR");
+                instlTy = rs.getString("INSTL_TY");
+                instlMby = rs.getString("INSTL_MBY");
+                svcSe = rs.getString("SVC_SE");
+                cmcwr = rs.getString("CMCWR");
+                cnstcYear = rs.getString("CNSTC_YEAR");
+                inoutDoor = rs.getString("INOUT_DOOR");
+                remars3 = rs.getString("REMARS3");
+                lnt = rs.getString("LNT");
+                lat = rs.getString("LAT");
+                workDttm = rs.getString("WORK_DTTM");
+
+                Wifi wifi = new Wifi();
+                wifi.setDist(dist);
+                wifi.setMgrNo(mgrNo);
+                wifi.setWrdofc(wrdofc);
+                wifi.setMainNm(mainNm);
+                wifi.setAdres1(adres1);
+                wifi.setAdres2(adres2);
+                wifi.setInstlFloor(instlFloor);
+                wifi.setInstlTy(instlTy);
+                wifi.setInstlMby(instlMby);
+                wifi.setSvcSe(svcSe);
+                wifi.setCmcwr(cmcwr);
+                wifi.setCnstcYear(cnstcYear);
+                wifi.setInoutDoor(inoutDoor);
+                wifi.setRemars3(remars3);
+                wifi.setLnt(lnt);
+                wifi.setLat(lat);
+                wifi.setWorkDttm(workDttm);
+
+                list.add(wifi);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()){
+                    rs.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        closeConnection();
         return list;
     }
 
+    public static Wifi getDetail(String mgrNo, String lat, String lnt){
+        Wifi wifi = new Wifi();
+        createConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
+        try {
+            String sql = "select round(abs(6371 * acos(cos(radians(info.LAT)) * cos(radians(?)) * " +
+                    "cos(radians(?) - radians(info.LNT)) + sin(radians(info.LAT)) * sin(radians(?)))), 4) as DISTANCE  " +
+                    ", *  " +
+                    "from info " +
+                    "where MGR_NO = ? ";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, lat);
+            ps.setString(2, lnt);
+            ps.setString(3, lat);
+            ps.setString(4, mgrNo);
+
+            rs = ps.executeQuery();
+
+            if (rs != null) {
+                wifi.setDist(rs.getString("DISTANCE"));
+                wifi.setMgrNo(rs.getString("MGR_NO"));
+                wifi.setWrdofc(rs.getString("WRDOFC"));
+                wifi.setMainNm(rs.getString("MAIN_NM"));
+                wifi.setAdres1(rs.getString("ADRES1"));
+                wifi.setAdres2(rs.getString("ADRES2"));
+                wifi.setInstlFloor(rs.getString("INSTL_FLOOR"));
+                wifi.setInstlTy(rs.getString("INSTL_TY"));
+                wifi.setInstlMby(rs.getString("INSTL_MBY"));
+                wifi.setSvcSe(rs.getString("SVC_SE"));
+                wifi.setCmcwr(rs.getString("CMCWR"));
+                wifi.setCnstcYear(rs.getString("CNSTC_YEAR"));
+                wifi.setInoutDoor(rs.getString("INOUT_DOOR"));
+                wifi.setRemars3(rs.getString("REMARS3"));
+                wifi.setLnt(rs.getString("LNT"));
+                wifi.setLat(rs.getString("LAT"));
+                wifi.setWorkDttm(rs.getString("WORK_DTTM"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()){
+                    rs.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        closeConnection();
+        return wifi;
+    }
+
+
+
+
+
+
+   // 안씀
+    public static void updateDistance(Double myLat, Double myLnt) {
+
+        PreparedStatement ps = null;
+
+        try {
+            String sql = "update info " +
+                    "set DISTANCE = round(abs(6371 * acos(cos(radians(info.LAT)) * " +
+                    "cos(radians(?)) * cos(radians(?) - radians(info.LNT))  " +
+                    "                     + sin(radians(info.LAT)) * sin(radians(?)))), 4)  " +
+                    "where  LAT != 0 and LNT !=0;";
+
+            ps = connection.prepareStatement(sql);
+            ps.setDouble(1, myLat);
+            ps.setDouble(2, myLnt);
+            ps.setDouble(3, myLat);
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 }

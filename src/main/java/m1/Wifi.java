@@ -8,7 +8,7 @@ import lombok.Setter;
 public class Wifi {
 
     private String dist;
-    private String mrgNo;
+    private String mgrNo;
     private String wrdofc;
     private String mainNm;
     private String adres1;
@@ -21,8 +21,8 @@ public class Wifi {
     private String cnstcYear;
     private String inoutDoor;
     private String remars3;
-    private String lat;
     private String lnt;
+    private String lat;
     private String workDttm;
 
 
