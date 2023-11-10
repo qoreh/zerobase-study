@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="m1.BookmarkGroup" %><%--
+<%@ page import="bookmark.BookmarkGroup" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/05
@@ -53,7 +53,6 @@
             background-color: #e0e0e0;
         }
 
-
     </style>
 </head>
 <body>
@@ -65,7 +64,7 @@
         <a href="../index.jsp">홈</a> |
         <a href="../history.jsp">위치 히스토리 목록</a> |
         <a href="../load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
-        <a href="bookmark.jsp">북마크 보기</a> |
+        <a href="bookmark-list.jsp">북마크 보기</a> |
         <a href="bookmark-group.jsp">북마크 그룹 관리</a>
     </div>
     <button onclick="window.location.href='bookmark-group-add.jsp'">북마크 그룹 이름 추가</button>
@@ -90,8 +89,8 @@
                 <td><%=bookmarkGroup.getRegDate()%></td>
                 <td><%=bookmarkGroup.getUpdateDate()%></td>
                 <td style="text-align: center">
-                    <a href="bookmark-group-edit.jsp">수정</a>
-                    <a href="bookmark-group-delete.jsp">삭제</a>
+                    <a href="bookmark-group-edit.jsp?id=<%=bookmarkGroup.getId()%>">수정</a>
+                    <a href="bookmark-group-delete.jsp?id=<%=bookmarkGroup.getId()%>">삭제</a>
                 </td>
             </tr>
             <% } %>

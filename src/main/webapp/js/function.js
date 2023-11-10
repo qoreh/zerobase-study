@@ -15,3 +15,12 @@ function chooseTable(){
 function reload() {
     window.location.reload();
 }
+
+function checkOption() {
+    var selectVal = document.getElementById("group-name").value;
+    if (selectVal === "") {
+        alert("북마크 그룹을 선택해주세요.");
+        return false;
+    }
+    return true;
+}

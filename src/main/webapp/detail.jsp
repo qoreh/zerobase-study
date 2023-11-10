@@ -1,5 +1,7 @@
-<%@ page import="m1.Wifi" %>
-<%@ page import="m1.WifiService" %><%--
+<%@ page import="wifi.Wifi" %>
+<%@ page import="wifi.WifiService" %>
+<%@ page import="java.util.List" %>
+<%@ page import="bookmark.BookmarkGroup" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/03
@@ -22,7 +24,7 @@
         }
 
         table{
-            margin-top: 8px;
+            margin-top: 0;
             width: 100%;
             font-size: 12px;
             font-weight: normal;
@@ -51,6 +53,14 @@
             background-color: #e0e0e0;
         }
 
+        form {
+            margin: 10px 0 0 0 ;
+        }
+
+        select {
+            font-size: 12px;
+        }
+
     </style>
 </head>
 <body>
@@ -59,6 +69,7 @@
         String lat = request.getParameter("lat");
         String lnt = request.getParameter("lnt");
         Wifi wifi = WifiService.getDetail(mgrNo, lat, lnt);
+        List<BookmarkGroup> bookmarkGroupList = BookmarkGroup.bookmarkGroupList();
     %>
 
     <h1>와이파이 상세 정보</h1>
@@ -66,9 +77,22 @@
         <a href="index.jsp" >홈</a> |
         <a href="history.jsp">위치 히스토리 목록</a> |
         <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
-        <a href="bookmark/bookmark.jsp">북마크 보기</a> |
+        <a href="bookmark/bookmark-list.jsp">북마크 보기</a> |
         <a href="bookmark/bookmark-group.jsp">북마크 그룹 관리</a>
     </div>
+
+    <form action="bookmark/bookmark-add-submit.jsp" method="POST" onsubmit="return checkOption()">
+        <select name="group-name" id="group-name">
+            <option value="">북마크 그룹 이름 선택</option>
+            <% for (BookmarkGroup bookmarkGroup : bookmarkGroupList) { %>
+            <option value="<%=bookmarkGroup.getId()%>"><%=bookmarkGroup.getName()%></option>
+            <% } %>
+        </select>
+        <input type="hidden" name="mgrNo" value="<%=mgrNo%>">
+        <input type="hidden" name="lnt" value="<%=lnt%>">
+        <input type="hidden" name="lat" value="<%=lat%>">
+        <input type="submit" value="북마크 추가하기" style="font-size: 12px">
+    </form>
 
     <table>
         <tbody>

@@ -1,4 +1,4 @@
-<%@ page import="m1.BookmarkGroup" %><%--
+<%@ page import="bookmark.BookmarkGroup" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/06

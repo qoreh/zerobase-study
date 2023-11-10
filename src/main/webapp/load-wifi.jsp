@@ -1,4 +1,4 @@
-<%@ page import="m1.WifiService" %>
+<%@ page import="wifi.WifiService" %>
 <%--
   Created by IntelliJ IDEA.
   User: sukyungyang

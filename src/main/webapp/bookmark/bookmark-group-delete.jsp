@@ -1,4 +1,4 @@
-<%--
+<%@ page import="bookmark.BookmarkGroup" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/06
@@ -10,15 +10,16 @@
 <head>
     <title>와이파이 정보 구하기</title>
     <style>
-        body{
+        body {
             margin: 20px 5px 0 5px;
             font-size: 14px;
         }
 
-        .hyperlink{
+        .hyperlink {
             font-size: 13px;
         }
-        table{
+
+        table {
             margin-top: 8px;
             width: 100%;
             font-size: 12px;
@@ -41,6 +42,7 @@
             height: 35px;
             padding: 0 7px 0 7px;
         }
+
         button {
             font-size: 12px;
 
@@ -53,38 +55,44 @@
     </style>
 </head>
 <body>
+<%
+    Integer id = Integer.parseInt(request.getParameter("id"));
+    BookmarkGroup bookmarkGroup = BookmarkGroup.getBookmarkGroup(id);
+%>
 <h1>북마크 그룹 관리</h1>
 <div class="hyperlink">
     <a href="../index.jsp">홈</a> |
     <a href="../history.jsp">위치 히스토리 목록</a> |
     <a href="../load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
-    <a href="bookmark.jsp">북마크 보기</a> |
+    <a href="bookmark-list.jsp">북마크 보기</a> |
     <a href="bookmark-group.jsp">북마크 그룹 관리</a>
 </div>
 <p style="font-size: 12px;">북마크 그룹 이름을 삭제하시겠습니까?</p>
 <table>
-    <form action="bookmark-group-delete-submit.jsp" method="POST">
-        <tbody>
-        <tr>
-            <th>북마크 이름</th>
-            <td>
-                <input type="text" name="name">
-            </td>
-        </tr>
-        <tr>
-            <th>순서</th>
-            <td>
-                <input type="text" name="order">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: center">
-                <a href="bookmark-group.jsp">돌아가기</a> |
+
+    <tbody>
+    <tr>
+        <th>북마크 이름</th>
+        <td>
+            <input type="text" name="name" value="<%=bookmarkGroup.getName()%>">
+        </td>
+    </tr>
+    <tr>
+        <th>순서</th>
+        <td>
+            <input type="text" name="order" value="<%=bookmarkGroup.getOrder()%>">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center">
+            <a href="bookmark-group.jsp">돌아가기</a> |
+            <form action="bookmark-group-delete-submit.jsp" method="POST" style="display: inline;">
+                <input type="hidden" name="id" value="<%=id%>">
                 <button type="submit">삭제</button>
-            </td>
-        </tr>
-        </tbody>
-    </form>
+            </form>
+        </td>
+    </tr>
+    </tbody>
 </table>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="m1.History" %><%--
+<%@ page import="wifi.History" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/10/30
@@ -12,17 +12,17 @@
     <title>와이파이 정보 구하기</title>
 
     <style>
-        body{
+        body {
             margin: 20px 5px 0 5px;
             font-size: 14px;
         }
 
-        .hyperlink{
+        .hyperlink {
             font-size: 13px;
         }
 
 
-        table{
+        table {
             margin-top: 8px;
             width: 100%;
             font-size: 12px;
@@ -46,9 +46,11 @@
             height: 35px;
             padding: 0 7px 0 7px;
         }
+
         tr:nth-child(even) {
             background-color: #f6f6f6;
         }
+
         tbody tr:hover {
             background-color: #e0e0e0;
         }
@@ -57,15 +59,15 @@
 </head>
 <body>
 <%
-    List<History> historyList = History.getHistoryInfo();
+    List<History> historyList = History.getHistoryList();
 %>
 
 <h1>위치 히스토리 목록</h1>
 <div class="hyperlink">
-    <a href="index.jsp" >홈</a> |
+    <a href="index.jsp">홈</a> |
     <a href="history.jsp">위치 히스토리 목록</a> |
     <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
-    <a href="bookmark/bookmark.jsp">북마크 보기</a> |
+    <a href="bookmark/bookmark-list.jsp">북마크 보기</a> |
     <a href="bookmark/bookmark-group.jsp">북마크 그룹 관리</a>
 </div>
 
@@ -82,21 +84,25 @@
     </thead>
 
     <tbody>
-        <%
-            for (History history : historyList) {
-        %>
+    <%
+        for (History history : historyList) {
+    %>
 
-            <tr>
-                <td><%=history.getId()%></td>
-                <td><%=history.getLnt()%></td>
-                <td><%=history.getLat()%></td>
-                <td><%=history.getCheckDate()%></td>
-                <td style="text-align: center"><button style="font-size: 12px">삭제</button></td>
-            </tr>
+    <tr>
+        <td><%=history.getId()%></td>
+        <td><%=history.getLnt()%></td>
+        <td><%=history.getLat()%></td>
+        <td><%=history.getCheckDate()%></td>
+        <td style="text-align: center">
+            <a href="history-delete.jsp?id=<%=history.getId()%>">
+                <button style="font-size: 12px">삭제</button>
+            </a>
+        </td>
+    </tr>
 
-        <%
-            }
-        %>
+    <%
+        }
+    %>
     </tbody>
 
 </table>
