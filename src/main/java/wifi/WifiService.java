@@ -41,7 +41,6 @@ public class WifiService {
             e.printStackTrace();
         } finally {
             connection = null;
-//            System.out.println("closed");
         }
     }
 
@@ -138,7 +137,6 @@ public class WifiService {
 
         PreparedStatement ps = null;
         try {
-//            connection.setAutoCommit(false);(connection메서드로 옮김)
 
             String sql = "INSERT INTO 'info' (MGR_NO, WRDOFC, MAIN_NM, ADRES1, ADRES2, INSTL_FLOOR, INSTL_TY, " +
                     " INSTL_MBY, SVC_SE, CMCWR, CNSTC_YEAR, INOUT_DOOR, REMARS3, LNT, LAT, WORK_DTTM) " +
@@ -187,14 +185,7 @@ public class WifiService {
         }
 
         int[] affected = ps.executeBatch();
-/*
-            for (int i = 0; i < affected.length; i++) {
-                if (affected[i] <= 0) {
-                    System.out.println("저장 실패");
-                }
-            }
 
- */
 
         } catch (SQLException e) {
             e.printStackTrace();
