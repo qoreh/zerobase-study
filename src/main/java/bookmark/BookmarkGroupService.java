@@ -33,7 +33,6 @@ public class BookmarkGroupService {
             e.printStackTrace();
         } finally {
             connection = null;
-//            System.out.println("closed");
         }
     }
 
