@@ -13,19 +13,20 @@
 <head>
     <title>와이파이 정보 구하기</title>
     <style>
-        body{
+        body {
             margin: 20px 5px 0 5px;
             font-size: 14px;
         }
 
-        .hyperlink{
+        .hyperlink {
             font-size: 13px;
         }
 
         button {
             margin-top: 10px;
         }
-        table{
+
+        table {
             margin-top: 10px;
             width: 100%;
             font-size: 12px;
@@ -40,7 +41,6 @@
             height: 34px;
             border: 1px solid #eaeaea;
             width: 300px;
-
         }
 
         td {
@@ -48,15 +48,17 @@
             height: 35px;
             padding: 0 7px 0 7px;
         }
+
         tr:nth-child(even) {
             background-color: #f6f6f6;
         }
+
         tr:hover {
             background-color: #e0e0e0;
         }
-
     </style>
 </head>
+
 <body>
 <%
     List<Bookmark> bookmarkList = BookmarkService.getBookmarkList();
@@ -82,13 +84,13 @@
     </thead>
 
     <tbody>
-    <% for(Bookmark bookmark : bookmarkList) { %>
+    <% for (Bookmark bookmark : bookmarkList) { %>
     <tr>
         <td><%=bookmark.getId()%></td>
         <td><%=bookmark.getGroupName()%></td>
         <td>
             <a href="bookmark-detail.jsp?id=<%=bookmark.getId()%>">
-            <%=bookmark.getWifiName()%>
+                <%=bookmark.getWifiName()%>
             </a>
         </td>
         <td><%=bookmark.getRegDate()%></td>
@@ -97,7 +99,6 @@
         </td>
     </tr>
     <% } %>
-
     </tbody>
 </table>
 

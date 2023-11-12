@@ -1,14 +1,15 @@
 <%@ page import="wifi.Wifi" %>
 <%@ page import="wifi.WifiService" %>
 <%@ page import="java.util.List" %>
-<%@ page import="bookmark.BookmarkGroup" %><%--
+<%@ page import="bookmark.BookmarkGroup" %>
+<%@ page import="bookmark.BookmarkGroupService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/03
   Time: 22:01
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <html>
 <head>
     <title>와이파이 정보 구하기</title>
@@ -38,7 +39,6 @@
             height: 34px;
             border: 1px solid #eaeaea;
             width: 300px;
-
         }
 
         td {
@@ -46,9 +46,11 @@
             height: 35px;
             padding: 0 7px 0 7px;
         }
+
         tr:nth-child(even) {
             background-color: #f6f6f6;
         }
+
         td:hover {
             background-color: #e0e0e0;
         }
@@ -60,16 +62,16 @@
         select {
             font-size: 12px;
         }
-
     </style>
 </head>
+
 <body>
     <%
         String mgrNo = request.getParameter("mgrNo");
         String lat = request.getParameter("lat");
         String lnt = request.getParameter("lnt");
         Wifi wifi = WifiService.getDetail(mgrNo, lat, lnt);
-        List<BookmarkGroup> bookmarkGroupList = BookmarkGroup.bookmarkGroupList();
+        List<BookmarkGroup> bookmarkGroupList = BookmarkGroupService.bookmarkGroupList();
     %>
 
     <h1>와이파이 상세 정보</h1>
@@ -166,7 +168,6 @@
                 <th>작업일자</th>
                 <td><%=wifi.getWorkDttm()%></td>
             </tr>
-
         </tbody>
     </table>
 

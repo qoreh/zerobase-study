@@ -1,4 +1,5 @@
-<%@ page import="bookmark.BookmarkGroup" %><%--
+<%@ page import="bookmark.BookmarkGroup" %>
+<%@ page import="bookmark.BookmarkGroupService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/06
@@ -13,7 +14,7 @@
 <body>
 <%
     Integer id = Integer.parseInt(request.getParameter("id"));
-    boolean success = BookmarkGroup.deleteBookmarkGroup(id);
+    boolean success = BookmarkGroupService.deleteBookmarkGroup(id);
     if (success) {
 %>
 <script>
@@ -28,5 +29,6 @@
     window.location.href='bookmark-group-delete.jsp';
 </script>
 <% }; %>
+
 </body>
 </html>

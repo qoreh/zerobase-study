@@ -1,6 +1,4 @@
 
-
-
 function chooseTable(){
     var lat = document.getElementById("LAT").value;
     var lnt = document.getElementById("LNT").value;

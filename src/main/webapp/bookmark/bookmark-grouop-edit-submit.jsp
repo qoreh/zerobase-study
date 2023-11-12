@@ -1,4 +1,5 @@
-<%@ page import="bookmark.BookmarkGroup" %><%--
+<%@ page import="bookmark.BookmarkGroup" %>
+<%@ page import="bookmark.BookmarkGroupService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/06
@@ -16,7 +17,7 @@
     String name = request.getParameter("name");
     Integer order = Integer.parseInt(request.getParameter("order"));
 
-    boolean success = BookmarkGroup.updateBookmarkGroup(id, name, order);
+    boolean success = BookmarkGroupService.updateBookmarkGroup(id, name, order);
     if (success) {
 %>
 <script>

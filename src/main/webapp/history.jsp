@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="wifi.History" %><%--
+<%@ page import="wifi.History" %>
+<%@ page import="wifi.HistoryService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/10/30
@@ -20,7 +21,6 @@
         .hyperlink {
             font-size: 13px;
         }
-
 
         table {
             margin-top: 8px;
@@ -57,9 +57,10 @@
 
     </style>
 </head>
+
 <body>
 <%
-    List<History> historyList = History.getHistoryList();
+    List<History> historyList = HistoryService.getHistoryList();
 %>
 
 <h1>위치 히스토리 목록</h1>
@@ -70,7 +71,6 @@
     <a href="bookmark/bookmark-list.jsp">북마크 보기</a> |
     <a href="bookmark/bookmark-group.jsp">북마크 그룹 관리</a>
 </div>
-
 
 <table>
     <thead>
@@ -104,7 +104,6 @@
         }
     %>
     </tbody>
-
 </table>
 
 </body>

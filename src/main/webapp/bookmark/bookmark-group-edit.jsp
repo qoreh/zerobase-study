@@ -1,5 +1,6 @@
 <%@ page import="bookmark.BookmarkGroup" %>
-<%@ page import="okhttp3.Request" %><%--
+<%@ page import="okhttp3.Request" %>
+<%@ page import="bookmark.BookmarkGroupService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/06
@@ -11,15 +12,16 @@
 <head>
     <title>와이파이 정보 구하기</title>
     <style>
-        body{
+        body {
             margin: 20px 5px 0 5px;
             font-size: 14px;
         }
 
-        .hyperlink{
+        .hyperlink {
             font-size: 13px;
         }
-        table{
+
+        table {
             margin-top: 8px;
             width: 100%;
             font-size: 12px;
@@ -34,7 +36,6 @@
             height: 34px;
             border: 1px solid #eaeaea;
             width: 300px;
-
         }
 
         td {
@@ -42,6 +43,7 @@
             height: 35px;
             padding: 0 7px 0 7px;
         }
+
         button {
             font-size: 12px;
 
@@ -53,10 +55,11 @@
 
     </style>
 </head>
+
 <body>
 <%
     Integer id = Integer.parseInt(request.getParameter("id"));
-    BookmarkGroup bookmarkGroup = BookmarkGroup.getBookmarkGroup(id);
+    BookmarkGroup bookmarkGroup = BookmarkGroupService.getBookmarkGroup(id);
 %>
 
 <h1>북마크 그룹 관리</h1>
@@ -92,5 +95,6 @@
         </tbody>
     </form>
 </table>
+
 </body>
 </html>

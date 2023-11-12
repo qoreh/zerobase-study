@@ -1,4 +1,5 @@
-<%@ page import="wifi.History" %><%--
+<%@ page import="wifi.History" %>
+<%@ page import="wifi.HistoryService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/10
@@ -13,7 +14,7 @@
 <body>
 <%
     Integer id = Integer.parseInt(request.getParameter("id"));
-    boolean success = History.deleteHistory(id);
+    boolean success = HistoryService.deleteHistory(id);
     if (success) {
 %>
 <script>

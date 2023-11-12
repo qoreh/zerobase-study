@@ -12,12 +12,10 @@ public class BookmarkService {
 
     public static void createConnection() {
 
-        // Driver 로드, 커넥션 객체
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(dbUrl);
             connection.setAutoCommit(false);
-//            System.out.println("Connected");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,16 +44,15 @@ public class BookmarkService {
         PreparedStatement ps = null;
 
         try {
-            String sql = "insert into bookmark(GROUP_NAME, WIFI_NAME, REG_DATE, MGR_NO)  "
+            String sql = "insert into bookmark(GROUP_NAME, WIFI_NAME, REG_DATE)  "
                     + "VALUES ((select name from bookmark_group where id = ?),  " +
                     "(select MAIN_NM from info where info.MGR_NO = ?),  " +
-                    "strftime('%Y-%m-%dT%H:%M:%S', 'now'), ?)";
+                    "strftime('%Y-%m-%dT%H:%M:%S', 'now'))";
 
             ps = connection.prepareStatement(sql);
 
             ps.setInt(1, id);
             ps.setString(2, mgrNo);
-            ps.setString(3, mgrNo);
 
             int affected = ps.executeUpdate();
             if (affected > 0) {
@@ -182,6 +179,40 @@ public class BookmarkService {
             String sql = "delete " +
                     "from bookmark  " +
                     "where ID = ?";
+
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            int affected = ps.executeUpdate();
+            if (affected > 0 ) {
+                success = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        closeConnection();
+        return success;
+    }
+
+    public static boolean deleteBookmarkWithBookmarkGroup(Integer id) {
+        boolean success = false;
+        createConnection();
+
+        PreparedStatement ps = null;
+
+        try {
+            String sql = "delete " +
+                    "from bookmark " +
+                    "where GROUP_NAME = (select NAME from bookmark_group where ID = ?)";
 
             ps = connection.prepareStatement(sql);
             ps.setInt(1, id);

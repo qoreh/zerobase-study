@@ -1,7 +1,6 @@
 
 function getLocation() {
     navigator.geolocation.getCurrentPosition(success);
-
 }
 
 function success(pos) {

@@ -20,12 +20,10 @@ public class WifiService {
 
     public static void createConnection() {
 
-        // Driver 로드, 커넥션 객체
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(dbUrl);
             connection.setAutoCommit(false);
-//            System.out.println("Connected");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +44,6 @@ public class WifiService {
 //            System.out.println("closed");
         }
     }
-
 
     public static int totalCnt(){
         int total = 0;
@@ -388,42 +385,5 @@ public class WifiService {
         return wifi;
     }
 
-
-
-
-
-
-   // 안씀
-    public static void updateDistance(Double myLat, Double myLnt) {
-
-        PreparedStatement ps = null;
-
-        try {
-            String sql = "update info " +
-                    "set DISTANCE = round(abs(6371 * acos(cos(radians(info.LAT)) * " +
-                    "cos(radians(?)) * cos(radians(?) - radians(info.LNT))  " +
-                    "                     + sin(radians(info.LAT)) * sin(radians(?)))), 4)  " +
-                    "where  LAT != 0 and LNT !=0;";
-
-            ps = connection.prepareStatement(sql);
-            ps.setDouble(1, myLat);
-            ps.setDouble(2, myLnt);
-            ps.setDouble(3, myLat);
-
-            ps.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (ps != null && !ps.isClosed()) {
-                    ps.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 
 }

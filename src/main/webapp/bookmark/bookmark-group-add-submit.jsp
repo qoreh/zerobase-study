@@ -1,4 +1,5 @@
-<%@ page import="bookmark.BookmarkGroup" %><%--
+<%@ page import="bookmark.BookmarkGroup" %>
+<%@ page import="bookmark.BookmarkGroupService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/06
@@ -14,7 +15,7 @@
 <%
     String name = request.getParameter("name");
     Integer order = Integer.parseInt(request.getParameter("order"));
-    boolean success = BookmarkGroup.addBookmarkGroup(name, order);
+    boolean success = BookmarkGroupService.addBookmarkGroup(name, order);
     if (success) {
 %>
     <script>
@@ -29,7 +30,6 @@
         window.location.href='bookmark-group-add.jsp';
     </script>
 <% }; %>
-
 
 </body>
 </html>

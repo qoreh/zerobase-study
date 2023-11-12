@@ -55,12 +55,13 @@
 
     </style>
 </head>
+
 <body>
 <%
     Integer id = Integer.parseInt(request.getParameter("id"));
     Bookmark bookmark = BookmarkService.getBookmark(id);
 %>
-<h1>북마크 삭제</h1>
+<h1>북마크</h1>
 <div class="hyperlink">
     <a href="../index.jsp">홈</a> |
     <a href="../history.jsp">위치 히스토리 목록</a> |

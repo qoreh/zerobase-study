@@ -1,11 +1,12 @@
-<%@ page import="bookmark.BookmarkGroup" %><%--
+<%@ page import="bookmark.BookmarkGroup" %>
+<%@ page import="bookmark.BookmarkGroupService" %><%--
   Created by IntelliJ IDEA.
   User: sukyungyang
   Date: 2023/11/06
   Time: 22:12
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <html>
 <head>
     <title>와이파이 정보 구하기</title>
@@ -34,7 +35,6 @@
             height: 34px;
             border: 1px solid #eaeaea;
             width: 300px;
-
         }
 
         td {
@@ -54,10 +54,11 @@
 
     </style>
 </head>
+
 <body>
 <%
     Integer id = Integer.parseInt(request.getParameter("id"));
-    BookmarkGroup bookmarkGroup = BookmarkGroup.getBookmarkGroup(id);
+    BookmarkGroup bookmarkGroup = BookmarkGroupService.getBookmarkGroup(id);
 %>
 <h1>북마크 그룹 관리</h1>
 <div class="hyperlink">
@@ -94,5 +95,6 @@
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>
